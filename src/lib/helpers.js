@@ -36,4 +36,11 @@ function getRandomElements(array, num) {
 	return arrayCopy.slice(0, num);
 }
 
-export { fetchData, getRandomElements };
+function titleCase(str) {
+	return str
+		.toLowerCase()
+		.split(' ')
+		.map((word) => word.charAt(0).toUpperCase() + word.substr(1));
+}
+
+export { fetchData, getRandomElements, titleCase };
