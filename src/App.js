@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { fetchPokemons, getRandomElements } from './lib/helpers';
+import { fetchData, getRandomElements } from './lib/helpers';
 import './App.css';
 
 function App(props) {
 	const [pickedPokemons, setPickedPokemons] = useState([]);
 
 	async function newGame() {
-		const pokemons = await fetchPokemons();
-		const randomPokemons = getRandomElements(pokemons, 20);
+		const pokemonsData = await fetchData(
+			'https://pokeapi.co/api/v2/pokemon?limit=1118'
+		);
+		const randomPokemons = getRandomElements(pokemonsData.results, 20);
 		setPickedPokemons(randomPokemons);
 	}
 

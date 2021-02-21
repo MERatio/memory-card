@@ -1,9 +1,8 @@
-async function fetchPokemons() {
+async function fetchData(url) {
 	try {
-		const url = 'https://pokeapi.co/api/v2/pokemon?limit=1118';
 		const response = await fetch(url, { mode: 'cors' });
 		const data = await response.json();
-		return data.results;
+		return data;
 	} catch (err) {
 		console.log(err);
 	}
@@ -37,4 +36,4 @@ function getRandomElements(array, num) {
 	return arrayCopy.slice(0, num);
 }
 
-export { fetchPokemons, getRandomElements };
+export { fetchData, getRandomElements };
