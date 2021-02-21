@@ -1,0 +1,7 @@
+.Card {
+	background-color: rgba(243, 249, 249, 0.5);
+}
+
+.Card:hover {
+	background-color: rgba(243, 249, 249, 0.9);
+}

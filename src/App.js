@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { fetchData, getRandomElements } from './lib/helpers';
 import './App.css';
+import Cards from './components/Cards';
 
 function App(props) {
 	const [pickedPokemons, setPickedPokemons] = useState([]);
@@ -35,7 +36,8 @@ function App(props) {
 				name: pokemon.name,
 				image:
 					pokemon.sprites.other['official-artwork'].front_default ||
-					pokemon.sprites.front_default,
+					pokemon.sprites.front_default ||
+					'https://media.giphy.com/media/12Bpme5pTzGmg8/giphy.gif',
 			};
 		});
 	}
@@ -67,7 +69,7 @@ function App(props) {
 
 	return (
 		<main>
-			<div>{JSON.stringify(pickedPokemons)}</div>
+			<Cards items={pickedPokemons} />
 		</main>
 	);
 }
