@@ -5,12 +5,59 @@ import './App.css';
 function App(props) {
 	const [pickedPokemons, setPickedPokemons] = useState([]);
 
-	async function newGame() {
-		const pokemonsData = await fetchData(
+	async function getCompletePokemonData(pokemonName) {
+		try {
+			const pokemonData = await fetchData(
+				`https://pokeapi.co/api/v2/pokemon/${pokemonName}`
+			);
+			return pokemonData;
+		} catch (err) {
+			console.log(err);
+		}
+	}
+
+	async function getPokemonsCompleteData(pokemonNames) {
+		try {
+			const completePokemonsData = await Promise.all(
+				pokemonNames.map(async (pokemonName) => {
+					return getCompletePokemonData(pokemonName);
+				})
+			);
+			return completePokemonsData;
+		} catch (err) {
+			console.log(err);
+		}
+	}
+
+	function processPokemons(pokemons) {
+		return pokemons.map((pokemon) => {
+			return {
+				name: pokemon.name,
+				image:
+					pokemon.sprites.other['official-artwork'].front_default ||
+					pokemon.sprites.front_default,
+			};
+		});
+	}
+
+	async function pickPokemons() {
+		const incPokemonsData = await fetchData(
 			'https://pokeapi.co/api/v2/pokemon?limit=1118'
 		);
-		const randomPokemons = getRandomElements(pokemonsData.results, 20);
-		setPickedPokemons(randomPokemons);
+		const incRandomPokemonsData = getRandomElements(
+			incPokemonsData.results,
+			20
+		);
+		const randomPokemonNames = incRandomPokemonsData.map((incPokemonData) => {
+			return incPokemonData.name;
+		});
+		const randomPokemons = await getPokemonsCompleteData(randomPokemonNames);
+		const processedPokemons = processPokemons(randomPokemons);
+		setPickedPokemons(processedPokemons);
+	}
+
+	async function newGame() {
+		pickPokemons();
 	}
 
 	useEffect(() => {
