@@ -1,3 +1,5 @@
+import { useEffect, useRef } from 'react';
+
 async function fetchData(url) {
 	try {
 		const response = await fetch(url, { mode: 'cors' });
@@ -43,4 +45,8 @@ function titleCase(str) {
 		.map((word) => word.charAt(0).toUpperCase() + word.substr(1));
 }
 
-export { fetchData, getRandomElements, titleCase };
+function hasDuplicates(array) {
+	return new Set(array).size !== array.length;
+}
+
+export { fetchData, getRandomElements, titleCase, hasDuplicates };
