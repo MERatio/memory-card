@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { fetchData, getRandomElements } from './lib/helpers';
+import { fetchData, getRandomElements, hasDuplicates } from './lib/helpers';
 import './App.css';
 import Header from './components/Header';
 import Scoreboard from './components/Scoreboard';
@@ -7,7 +7,16 @@ import Cards from './components/Cards';
 
 function App(props) {
 	const [pickedPokemons, setPickedPokemons] = useState([]);
+	const [selectedCards, setSelectedCards] = useState([]);
 	const [score, setScore] = useState({ current: 0, best: 0 });
+	const [isWinner, setIsWinner] = useState(undefined);
+
+	function resetState() {
+		setPickedPokemons([]);
+		setSelectedCards([]);
+		setScore((prevScore) => ({ ...prevScore, current: 0 }));
+		setIsWinner(undefined);
+	}
 
 	async function getCompletePokemonData(pokemonName) {
 		try {
@@ -62,13 +71,73 @@ function App(props) {
 	}
 
 	async function newGame() {
+		resetState();
 		pickPokemons();
 	}
+
+	function bestScoreText(score) {
+		return `${score.current === score.best ? ' NEW BEST SCORE!!!' : ''}`;
+	}
+
+	function handleCardClick(e) {
+		const target = e.target;
+		const cardName = target.dataset.name;
+		setSelectedCards((prevSelectedCards) => [...prevSelectedCards, cardName]);
+	}
+
+	// Use effects
 
 	useEffect(() => {
 		newGame();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
+
+	useEffect(() => {
+		function determineScoreOrIfLoser(selectedCards) {
+			if (selectedCards.length === 0) {
+				return;
+			}
+			const selectedCardsHasDulicates = hasDuplicates(selectedCards);
+			if (!selectedCardsHasDulicates) {
+				setScore((prevScore) => {
+					const newScore = prevScore.current + 1;
+					return {
+						current: newScore,
+						best: newScore > prevScore.best ? newScore : prevScore.best,
+					};
+				});
+			} else {
+				setIsWinner(false);
+			}
+		}
+		determineScoreOrIfLoser(selectedCards);
+	}, [selectedCards]);
+
+	useEffect(() => {
+		function determineIfWinner(score) {
+			if (score.current >= 20) {
+				setIsWinner(true);
+			}
+		}
+		determineIfWinner(score);
+	}, [score]);
+
+	useEffect(() => {
+		function messageAndDetermineIfNewGame(selectedCards, isWinner) {
+			if (selectedCards.length === 0) {
+				return;
+			}
+			if (typeof isWinner === 'boolean') {
+				alert(
+					`You ${isWinner ? 'win' : 'lose'}, your score is ${
+						score.current
+					} ${bestScoreText(score)}.`
+				);
+				newGame();
+			}
+		}
+		messageAndDetermineIfNewGame(selectedCards, isWinner);
+	}, [selectedCards, isWinner]);
 
 	return (
 		<main>
@@ -82,7 +151,7 @@ function App(props) {
 				<Header classes={'mb-3 mb-md-0'} />
 				<Scoreboard score={score} />
 			</div>
-			<Cards items={pickedPokemons} />
+			<Cards items={pickedPokemons} onCardClick={handleCardClick} />
 		</main>
 	);
 }

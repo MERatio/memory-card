@@ -1,12 +1,12 @@
 import Card from './Card';
 
 function Cards(props) {
-	const { items } = props;
+	const { items, onCardClick } = props;
 
 	const cards = items.map((item) => {
 		return (
 			<div key={item.name} className="col mb-4">
-				<Card item={item} />
+				<Card item={item} onCardClick={onCardClick} />
 			</div>
 		);
 	});

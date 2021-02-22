@@ -5,3 +5,7 @@
 .Card:hover {
 	background-color: rgba(243, 249, 249, 0.9);
 }
+
+.Card * {
+	pointer-events: none;
+}
