@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { fetchData, getRandomElements } from './lib/helpers';
 import './App.css';
+import Header from './components/Header';
+import Scoreboard from './components/Scoreboard';
 import Cards from './components/Cards';
 
 function App(props) {
 	const [pickedPokemons, setPickedPokemons] = useState([]);
+	const [score, setScore] = useState({ current: 0, best: 0 });
 
 	async function getCompletePokemonData(pokemonName) {
 		try {
@@ -69,6 +72,16 @@ function App(props) {
 
 	return (
 		<main>
+			<div
+				className="container 
+					top-part
+					align-items-center 
+					py-2
+					my-4"
+			>
+				<Header classes={'mb-3 mb-md-0'} />
+				<Scoreboard score={score} />
+			</div>
 			<Cards items={pickedPokemons} />
 		</main>
 	);

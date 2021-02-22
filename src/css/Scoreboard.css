@@ -1,0 +1,21 @@
+.Scoreboard {
+	font-size: 1.2em;
+}
+
+.Scoreboard > div {
+	display: flex;
+	justify-content: space-between;
+}
+
+@media only screen and (min-width: 576px) {
+	.Scoreboard {
+		width: 50%;
+		padding: 0;
+	}
+}
+
+@media only screen and (min-width: 768px) {
+	.Scoreboard {
+		width: 80%;
+	}
+}

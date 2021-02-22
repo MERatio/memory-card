@@ -1,0 +1,22 @@
+.top-part {
+	background-color: rgba(243, 249, 249, 0.8);
+}
+
+@media only screen and (min-width: 768px) {
+	.mb-md-0 {
+		margin-bottom: 0;
+	}
+
+	.top-part {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+	}
+
+	.top-part > *:nth-child(1) {
+		grid-column-start: 2;
+	}
+
+	.top-part > *:nth-child(3) {
+		grid-column-start: 3;
+	}
+}
