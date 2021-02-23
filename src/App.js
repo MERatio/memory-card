@@ -94,7 +94,7 @@ function App(props) {
 	// Use effects
 
 	useEffect(() => {
-		newGame();
+		pickPokemons();
 	}, []);
 
 	useEffect(() => {
