@@ -10,10 +10,14 @@ import Header from './components/Header';
 import Scoreboard from './components/Scoreboard';
 import Cards from './components/Cards';
 import LoadingSpinner from './components/LoadingSpinner';
+import ShuffleSpinner from './components/ShuffleSpinner';
 
 function App(props) {
 	const [pickedPokemons, setPickedPokemons] = useState([]);
 	const [selectedCards, setSelectedCards] = useState([]);
+	const [isPickedPokemonsShuffling, setIsPickedPokemonsShuffling] = useState(
+		false
+	);
 	const [score, setScore] = useState({
 		current: 0,
 		best: parseInt(localStorage.getItem('bestScore'), 10) || 0,
@@ -23,6 +27,7 @@ function App(props) {
 	function resetState() {
 		setPickedPokemons([]);
 		setSelectedCards([]);
+		setIsPickedPokemonsShuffling(false);
 		setScore((prevScore) => ({
 			current: 0,
 			best: parseInt(localStorage.getItem('bestScore'), 10) || prevScore.best,
@@ -96,6 +101,8 @@ function App(props) {
 		const cardName = target.dataset.name;
 		setSelectedCards((prevSelectedCards) => [...prevSelectedCards, cardName]);
 		setPickedPokemons(shuffle(pickedPokemons));
+		setIsPickedPokemonsShuffling(true);
+		setTimeout(() => setIsPickedPokemonsShuffling(false), 300);
 	}
 
 	// Use effects
@@ -172,6 +179,8 @@ function App(props) {
 			</div>
 			{pickedPokemons.length === 0 ? (
 				<LoadingSpinner />
+			) : isPickedPokemonsShuffling ? (
+				<ShuffleSpinner />
 			) : (
 				<Cards items={pickedPokemons} onCardClick={handleCardClick} />
 			)}
