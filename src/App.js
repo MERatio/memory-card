@@ -9,6 +9,7 @@ import './App.css';
 import Header from './components/Header';
 import Scoreboard from './components/Scoreboard';
 import Cards from './components/Cards';
+import LoadingSpinner from './components/LoadingSpinner';
 
 function App(props) {
 	const [pickedPokemons, setPickedPokemons] = useState([]);
@@ -169,7 +170,11 @@ function App(props) {
 				<Header classes={'mb-3 mb-md-0'} />
 				<Scoreboard score={score} />
 			</div>
-			<Cards items={pickedPokemons} onCardClick={handleCardClick} />
+			{pickedPokemons.length === 0 ? (
+				<LoadingSpinner />
+			) : (
+				<Cards items={pickedPokemons} onCardClick={handleCardClick} />
+			)}
 		</main>
 	);
 }
