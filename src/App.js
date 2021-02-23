@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { fetchData, getRandomElements, hasDuplicates } from './lib/helpers';
+import {
+	fetchData,
+	shuffle,
+	getRandomElements,
+	hasDuplicates,
+} from './lib/helpers';
 import './App.css';
 import Header from './components/Header';
 import Scoreboard from './components/Scoreboard';
@@ -83,6 +88,7 @@ function App(props) {
 		const target = e.target;
 		const cardName = target.dataset.name;
 		setSelectedCards((prevSelectedCards) => [...prevSelectedCards, cardName]);
+		setPickedPokemons(shuffle(pickedPokemons));
 	}
 
 	// Use effects
