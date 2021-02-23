@@ -49,4 +49,4 @@ function hasDuplicates(array) {
 	return new Set(array).size !== array.length;
 }
 
-export { fetchData, getRandomElements, titleCase, hasDuplicates };
+export { fetchData, shuffle, getRandomElements, titleCase, hasDuplicates };
