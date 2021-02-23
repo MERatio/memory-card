@@ -13,13 +13,19 @@ import Cards from './components/Cards';
 function App(props) {
 	const [pickedPokemons, setPickedPokemons] = useState([]);
 	const [selectedCards, setSelectedCards] = useState([]);
-	const [score, setScore] = useState({ current: 0, best: 0 });
+	const [score, setScore] = useState({
+		current: 0,
+		best: parseInt(localStorage.getItem('bestScore'), 10) || 0,
+	});
 	const [isWinner, setIsWinner] = useState(undefined);
 
 	function resetState() {
 		setPickedPokemons([]);
 		setSelectedCards([]);
-		setScore((prevScore) => ({ ...prevScore, current: 0 }));
+		setScore((prevScore) => ({
+			current: 0,
+			best: parseInt(localStorage.getItem('bestScore'), 10) || prevScore.best,
+		}));
 		setIsWinner(undefined);
 	}
 
@@ -117,6 +123,13 @@ function App(props) {
 		}
 		determineScoreOrIfLoser(selectedCards);
 	}, [selectedCards]);
+
+	useEffect(() => {
+		function storeBestScoreToLocalStorage(bestScore) {
+			localStorage.setItem('bestScore', bestScore);
+		}
+		storeBestScoreToLocalStorage(score.best);
+	}, [score]);
 
 	useEffect(() => {
 		function determineIfWinner(score) {
