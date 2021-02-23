@@ -35,22 +35,20 @@ function App(props) {
 		setIsWinner(undefined);
 	}
 
-	async function getCompletePokemonData(pokemonName) {
+	async function getCompletePokemonData(pokemonUrl) {
 		try {
-			const pokemonData = await fetchData(
-				`https://pokeapi.co/api/v2/pokemon/${pokemonName}`
-			);
+			const pokemonData = await fetchData(pokemonUrl);
 			return pokemonData;
 		} catch (err) {
 			console.log(err);
 		}
 	}
 
-	async function getPokemonsCompleteData(pokemonNames) {
+	async function getPokemonsCompleteData(pokemonUrls) {
 		try {
 			const completePokemonsData = await Promise.all(
-				pokemonNames.map(async (pokemonName) => {
-					return getCompletePokemonData(pokemonName);
+				pokemonUrls.map(async (pokemonUrl) => {
+					return getCompletePokemonData(pokemonUrl);
 				})
 			);
 			return completePokemonsData;
@@ -79,10 +77,10 @@ function App(props) {
 			incPokemonsData.results,
 			20
 		);
-		const randomPokemonNames = incRandomPokemonsData.map((incPokemonData) => {
-			return incPokemonData.name;
+		const incRandomPokemonsUrl = incRandomPokemonsData.map((incPokemonData) => {
+			return incPokemonData.url;
 		});
-		const randomPokemons = await getPokemonsCompleteData(randomPokemonNames);
+		const randomPokemons = await getPokemonsCompleteData(incRandomPokemonsUrl);
 		const processedPokemons = processPokemons(randomPokemons);
 		setPickedPokemons(processedPokemons);
 	}
