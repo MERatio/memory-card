@@ -128,7 +128,7 @@ function App(props) {
 	}, [score]);
 
 	useEffect(() => {
-		function messageAndDetermineIfNewGame(selectedCards, isWinner) {
+		function messageAndDetermineIfNewGame(selectedCards, score, isWinner) {
 			if (selectedCards.length === 0) {
 				return;
 			}
@@ -141,8 +141,8 @@ function App(props) {
 				newGame();
 			}
 		}
-		messageAndDetermineIfNewGame(selectedCards, isWinner);
-	}, [selectedCards, isWinner]);
+		messageAndDetermineIfNewGame(selectedCards, score, isWinner);
+	}, [selectedCards, score, isWinner]);
 
 	return (
 		<main>
